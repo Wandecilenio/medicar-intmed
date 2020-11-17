@@ -38,8 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # 3rd apps libraries
+    'rest_framework',
     # Medicar Apps
     'administration.apps.AdministrationConfig',
+    'api.apps.ApiConfig',
 ]
 
 MIDDLEWARE = [
@@ -78,8 +81,12 @@ WSGI_APPLICATION = 'medicar.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'medicar',
+        'USER': 'postgres',
+        'PASSWORD': 'medicar-dev123',
+        'HOST': 'ec2-3-20-235-25.us-east-2.compute.amazonaws.com',
+        'PORT': '5432',
     }
 }
 
