@@ -40,7 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # 3rd apps libraries
     'rest_framework',
+    'rest_framework.authtoken',
     # Medicar Apps
+    'account.apps.AccountConfig',
     'administration.apps.AdministrationConfig',
     'api.apps.ApiConfig',
 ]
@@ -128,3 +130,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+}
+
+AUTH_USER_MODEL = 'account.User'
