@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # 3rd apps libraries
     'rest_framework',
     'rest_framework.authtoken',
+    'corsheaders',
     # Medicar Apps
     'account.apps.AccountConfig',
     'administration.apps.AdministrationConfig',
@@ -48,6 +49,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -138,3 +140,5 @@ REST_FRAMEWORK = {
 }
 
 AUTH_USER_MODEL = 'account.User'
+
+CORS_ORIGIN_ALLOW_ALL = True
