@@ -1,0 +1,132 @@
+<div class="container">
+  <div class="header">
+    <div class="logo"><img src="assets/logo.png" alt="Medicar"></div>
+    <div class="username">{{userName}}</div>
+    <div class="logout"><medicar-button (onClick)="handleLogout()" text="Desconectar" type="button" small="true"></medicar-button></div>
+  </div>
+
+  <div class="content">
+    <div class="header">
+      <div class="title">Consulta Clínica</div>
+      <div class="new-appointment-button-wrapper">
+        <medicar-button
+          [icon]="iconAdd"
+          small="true"
+          text="Nova Consulta"
+          type="button"
+          primary="true"
+          (onClick)="handleOpenModal()">
+        </medicar-button>
+      </div>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 25%;">Especialidade</th>
+          <th style="width: 25%;">Profissional</th>
+          <th style="width: 18%;">Data</th>
+          <th style="width: 18%;">Hora</th>
+          <th class="actions"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="empty" *ngIf="consultas.length == 0">
+          <td colspan="5">Sem registros</td>
+        </tr>
+
+        <tr *ngFor="let consulta of consultas">
+          <td>{{consulta.medico.especialidade.nome}}</td>
+          <td>{{consulta.medico.nome}}</td>
+          <td>{{consulta.dia | date: 'dd/MM/yyyy'}}</td>
+          <td>{{consulta.horario}}</td>
+          <td class="actions"><medicar-button [icon]="iconCross" small="true" text="Desmarcar" type="button"></medicar-button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<medicar-modal title="Nova Consulta" [opened]="modalOpened">
+
+  <div class="form-item">
+    <ng-select
+      class="custom"
+      bindValue="id"
+      bindLabel="nome"
+      placeholder="Especialidade"
+      loadingText="Carregando..."
+      typeToSearchText="Digite no minimo 3 caracteres para pesquisar"
+      (search)="handleEspecialidadesSearch()"
+      (add)="handleEspecialidadeOnAdd()"
+      (remove)="handleEspecialidadeOnRemove()"
+      [searchFn]="handleSetEspecialidadesSearch"
+      [minTermLength]="3"
+      [searchWhileComposing]="false"
+      [items]="comboEspecialidadesData"
+      [multiple]="true"
+      [loading]="comboEspecialidadesLoading"
+      [(ngModel)]="especialidadesSelecionadas">
+    </ng-select>
+  </div>
+
+  <div class="form-item">
+    <ng-select
+      class="custom"
+      bindValue="id"
+      bindLabel="nome"
+      placeholder="Médico"
+      loadingText="Carregando..."
+      typeToSearchText="Digite no minimo 3 caracteres para pesquisar"
+      (search)="handleMedicosSearch()"
+      [searchFn]="handleSetMedicosSearch"
+      [minTermLength]="3"
+      [markFirst]="true"
+      [searchWhileComposing]="false"
+      [items]="comboMedicosData"
+      [loading]="comboMedicosLoading"
+      [(ngModel)]="medicoSelecionado"
+      [disabled]="especialidadesSelecionadas.length === 0">
+    </ng-select>
+  </div>
+
+<!--
+  <div class="form-item">
+    <ng-select
+      class="custom"
+      placeholder="Data"
+      [items]="options"
+      bindLabel="nome"
+      bindValue="id"
+      [(ngModel)]="selectedOption">
+    </ng-select>
+  </div>
+
+  <div class="form-item">
+    <ng-select
+      class="custom"
+      placeholder="Hora"
+      [items]="options"
+      bindLabel="nome"
+      bindValue="id"
+      [(ngModel)]="selectedOption">
+    </ng-select>
+  </div> -->
+
+  <div class="buttons">
+    <medicar-button
+      class="button"
+      text="Cancelar"
+      type="button"
+      (onClick)="handleCancelModal()">
+    </medicar-button>
+
+    <medicar-button
+      class="button"
+      text="Confirmar"
+      primary="true"
+      [disabled]="modalSaveDisabled"
+      (onClick)="handleSaveModal()">
+    </medicar-button>
+  </div>
+
+</medicar-modal>

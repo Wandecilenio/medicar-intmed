@@ -1,0 +1,38 @@
+:host {
+  width: auto;
+  form {
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+
+    .logo {
+      margin-bottom: 20px;
+    }
+
+    .input {
+      margin-top: 20px;
+
+      &.checkbox {
+        margin-top: 8px;
+      }
+    }
+
+    div.buttons {
+      margin-top: 40px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      .button {
+        &:first-child {
+          margin-right: 20px;
+        }
+
+        &:last-child {
+          margin-left: 20px;
+        }
+      }
+    }
+  }
+}

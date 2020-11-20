@@ -1,0 +1,3 @@
+<input [(ngModel)]="inputValue" type="{{(secure == true && visible == false) ? 'password' : type}}" name="{{name}}" id="{{id}}">
+<span class="placeholder {{ (inputValue != '') ? 'not-empty' : '' }}">{{placeholder}}</span>
+<fa-icon class="icone" [icon]="eyeIcon" *ngIf="secure == true" (click)="passwordVisible = !passwordVisible"></fa-icon>

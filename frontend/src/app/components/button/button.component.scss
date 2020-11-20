@@ -1,0 +1,39 @@
+:host {
+  flex: 1;
+
+  button {
+    width: 100%;
+    height: 40px;
+    background: transparent;
+    color: var(--primary);
+    border-radius: 8px;
+    border: none;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .3s all ease;
+
+    .icone {
+      margin-right: 8px;
+    }
+
+    &.small {
+      height: 24px;
+      font-size: 13px;
+      font-weight: 400;
+    }
+
+    &.primary {
+      background: var(--primary);
+      color: var(--white);
+    }
+
+    &:hover, &:active, &:disabled {
+      background: var(--secondary);
+    }
+
+    &.primary:hover, &.primary:active, &.primary:disabled {
+      background: #90D3D7;
+    }
+  }
+}

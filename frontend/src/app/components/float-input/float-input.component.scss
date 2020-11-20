@@ -1,0 +1,54 @@
+:host {
+  flex: 1;
+  position: relative;
+
+  input {
+    width: 100%;
+    height: 40px;
+    padding: 12px 8px;
+
+    background: var(--white);
+    border: 1px solid var(--gray2);
+    border-radius: 4px;
+
+    &[type=password] {
+      padding-right: 50px;
+    }
+
+    &:focus {
+      border-color: var(--primary);
+
+      & + span {
+        top: -8px;
+
+      }
+    }
+  }
+
+  span.placeholder {
+    position: absolute;
+    top: 11px;
+    left: 8px;
+    padding: 0 4px;
+
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--gray2);
+    background-color: var(--white);
+    transition: all 0.15s ease;
+
+    pointer-events: none;
+
+    &.not-empty {
+      top: -8px;
+    }
+  }
+
+  .icone {
+    position: absolute;
+    top: 11px;
+    right: 20px;
+    cursor: pointer;
+    color: var(--gray2);
+  }
+}

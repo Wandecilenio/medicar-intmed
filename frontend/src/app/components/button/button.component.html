@@ -1,0 +1,4 @@
+<button [disabled]="disabled" [class.primary]="primary" [class.small]="small" class="medicar-button" type="{{type}}" (click)="click()">
+  <fa-icon class="icone" [icon]="icon" *ngIf="icon !== undefined"></fa-icon>
+  {{text}}
+</button>

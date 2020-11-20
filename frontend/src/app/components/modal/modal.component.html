@@ -1,0 +1,8 @@
+<medicar-centered-full-page class="overlay" *ngIf="opened">
+  <div class="modal">
+    <div *ngIf="title" class="header">{{title}}</div>
+    <div class="content">
+      <ng-content></ng-content>
+    </div>
+  </div>
+</medicar-centered-full-page>

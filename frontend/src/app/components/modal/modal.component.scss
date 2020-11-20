@@ -1,0 +1,41 @@
+:host::ng-deep {
+  div.modal {
+    width: 100%;
+    max-width: 480px;
+    padding: 40px 40px 20px;
+
+    background-color: var(--white);
+
+    display: flex;
+    flex-direction: column;
+
+    .header {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .content {
+      .form-item {
+        margin-top: 20px;
+        width: 100%;
+      }
+
+      .buttons {
+        margin-top: 20px;
+        display: flex;
+        flex-direction: row;
+
+        .button {
+          &:first-child {
+            margin-right: 20px;
+          }
+
+          &:last-child {
+            margin-left: 20px;
+          }
+        }
+      }
+    }
+  }
+}

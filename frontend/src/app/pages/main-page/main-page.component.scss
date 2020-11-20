@@ -1,0 +1,138 @@
+@import "../../../styles.scss";
+
+:host {
+  @include fullwidth();
+  @include center-in-row();
+  justify-content: flex-start;
+
+  background-color: var(--white);
+
+  div.container {
+    width: 100%;
+    max-width: 720px;
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+
+    div.header {
+      height: 60px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .logo {
+        height: 25px;
+
+        img {
+          height: 100%;
+        }
+      }
+
+      .username {
+        flex: 1;
+        text-align: right;
+        padding-right: 20px;
+        font-size: 13px;
+        font-weight: 400;
+        color: var(--gray2);
+      }
+
+      .logout {
+        width: 120px;
+      }
+    }
+
+    div.content {
+      flex: 1;
+
+      margin-bottom: 20px;
+      border-radius: 4px;
+      padding: 16px 8px;
+
+      background: var(--white);
+      box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+
+      display: flex;
+      flex-direction: column;
+
+      div.header {
+        @include center-in-col();
+        justify-content: space-between;
+        height: 25px;
+
+        div.title {
+          flex: 1;
+          font-size: 18px;
+          font-weight: 700;
+        }
+
+        div.new-appointment-button-wrapper {
+          width: 138px;
+        }
+      }
+
+      table {
+        width: 100%;
+
+        tr {
+          flex: 1;
+          color: var(--black);
+          height: 32px;
+
+          &:nth-child(even) {
+            background-color: var(--gray1);
+          }
+
+          &:nth-child(odd) {
+            background-color: var(--white);
+          }
+        }
+
+        td.actions {
+          width: 14%;
+        }
+
+        tr.empty {
+          text-align: center;
+          font-size: 13px;
+          font-weight: 400;
+          color: var(--gray2);
+        }
+
+        thead {
+          tr {
+            th {
+              font-weight: 700;
+              font-size: 12px;
+              color: var(--gray2);
+              text-align: left;
+
+              text-transform: uppercase;
+
+              &:first-child {
+                padding-left: 8px;
+              }
+            }
+          }
+        }
+
+        tbody {
+          tr {
+
+            td {
+              font-weight: 400;
+              font-size: 13px;
+              line-height: 15px;
+
+              &:first-child {
+                padding-left: 8px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

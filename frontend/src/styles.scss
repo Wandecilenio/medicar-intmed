@@ -1,0 +1,69 @@
+/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+@import "~@ng-select/ng-select/themes/default.theme.css";
+@import '~ngx-toastr/toastr';
+
+@mixin fullwidth {
+  position: fixed;
+
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  width: 100vw;
+  height: 100vh;
+}
+
+@mixin center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin center-in-row {
+  @include center();
+  flex-direction: column;
+}
+
+@mixin center-in-col {
+  @include center();
+  flex-direction: row;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+
+  box-sizing: border-box;
+  outline: none;
+
+  font-family: 'Roboto', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html, body {
+  @include fullwidth();
+}
+
+:root {
+  --black: #444444;
+  --primary: #49B4BB;
+  --secondary: #D9F1F3;
+  --gray1: #F8F8F8;
+  --gray2: #A8A8A8;
+  --white: #ffffff;
+}
+
+.ng-select.custom ng-deep {
+  background: var(--white);
+  border: 1px solid var(--gray2);
+  border-radius: 4px;
+
+  &::placeholder {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--gray2);
+  }
+}

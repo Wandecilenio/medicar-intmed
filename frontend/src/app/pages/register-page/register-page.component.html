@@ -1,0 +1,17 @@
+<medicar-centered-full-page>
+  <form (ngSubmit)="handleRegister()">
+    <div class="logo"><img src="assets/logo.png" alt="Medicar"></div>
+
+    <div class="title">Crie sua conta</div>
+
+    <medicar-float-input [(value)]="name" class="input" placeholder="Nome"></medicar-float-input>
+    <medicar-float-input [(value)]="email" class="input" placeholder="Email"></medicar-float-input>
+    <medicar-float-input [(value)]="password" class="input" placeholder="Senha" [secure]="true"></medicar-float-input>
+    <medicar-float-input [(value)]="password2" class="input" placeholder="Confirmar Senha" [secure]="true"></medicar-float-input>
+
+    <div class="buttons">
+      <medicar-button (onClick)="redirectLogin()" class="button" text="Cancelar" type="button"></medicar-button>
+      <medicar-button class="button" text="Confirmar" primary="true"></medicar-button>
+    </div>
+  </form>
+</medicar-centered-full-page>
