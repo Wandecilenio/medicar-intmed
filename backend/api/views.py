@@ -1,6 +1,10 @@
-from django.db.models import Count
+from django.db.models import Q
+from django.db.models.functions import Concat
 from rest_framework import viewsets, filters
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.exceptions import ValidationError
+from rest_framework.response import Response
+from rest_framework import status
 import datetime
 
 from .serializers import EspecialidadeSerializer, MedicoSerializer, ConsultaSerializer, AgendaSerializer
@@ -28,16 +32,63 @@ class MedicoViewSet(viewsets.ReadOnlyModelViewSet):
             return self.queryset.filter(especialidade__id__in=especialidades)
         return self.queryset
 
-class ConsultaViewSet(viewsets.ReadOnlyModelViewSet):
+class ConsultaViewSet(viewsets.ModelViewSet):
     serializer_class = ConsultaSerializer
     permission_classes = (IsAuthenticated,)
     queryset = Consulta.objects.all()
+    allowed_methods = ('GET', 'POST', 'DELETE')
     
     def get_queryset(self):
-        user = User.objects.get(email=self.request.user)
-        queryset = self.queryset.filter(user=user).exclude(agenda__dia__lt=datetime.date.today())
-        queryset = queryset.exclude(horario__lt=datetime.datetime.now()).order_by('agenda__dia', 'horario')
+        query_agenda_passada = Q(agenda__dia__lt=datetime.date.today())
+        query_horario_passado = Q(Q(agenda__dia__lte=datetime.date.today()) & Q(horario__lt=datetime.datetime.now().time()))
+
+        queryset = self.queryset.filter(user=self.request.user)
+        queryset = queryset.exclude(query_agenda_passada | query_horario_passado)
+        queryset = queryset.order_by('agenda__dia', 'horario')
+        
         return queryset
+    
+    def create(self, request, *args, **kwargs):
+        agenda_id = request.data.get('agenda_id')
+        horario = request.data.get('horario')
+        agenda = Agenda.objects.filter(pk=agenda_id).first()
+
+        # A Agenda e obrigatoria
+        if agenda is None:
+            raise ValidationError("Agenda não encontrada")
+
+        # Nao pode marcar consulta numa agenda antiga
+        if agenda.dia < datetime.date.today():
+            raise ValidationError("Não é possível marcar uma consulta para uma agenda que já passou")
+        
+        # Nao pode marcar consulta num horario que ja passou
+        if datetime.datetime.strptime(f'{agenda.dia} {horario}', f'%Y-%m-%d %H:%M:%S') < datetime.datetime.now():
+            raise ValidationError("Não é possível marcar uma consulta para um horário que já passou")
+        
+        # Nao se pode marcar uma consulta se o horario passado naquela agenda, esta sendo usado
+        consulta = Consulta.objects.filter(agenda__id=agenda_id, horario=horario).first()
+        if consulta is not None:
+            raise ValidationError("Esse horário dessa agenda já esta preenchido, por favor selecione outro")
+
+        nova_consulta = Consulta.objects.create(
+            medico = agenda.medico,
+            user = request.user,
+            agenda=agenda,
+            horario=horario,
+            data_agendamento=datetime.datetime.now()
+        )
+
+        serializer = ConsultaSerializer(nova_consulta)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    # def destroy(self, request, *args, **kwargs):
+    #     agora = datetime.now().strftime('%Y-%m-%d %H:%M')
+    #     consulta = Consulta.objects.filter(pk=self.kwargs.get('pk'), usuario=self.request.user, dia__gte=agora).first()
+    #     if consulta is None:
+    #         return Response(status=status.HTTP_404_NOT_FOUND)
+    #     consulta.usuario = None
+    #     consulta.save()
+    #     return Response(status=status.HTTP_204_NO_CONTENT)
 
 class AgendaViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = AgendaSerializer

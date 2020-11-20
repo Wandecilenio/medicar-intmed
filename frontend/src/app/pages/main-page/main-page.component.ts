@@ -213,9 +213,26 @@ export class MainPageComponent implements OnInit {
   }
 
   handleSaveModal() {
-    console.log('Marque uma consulta na agenda do ID', this.agendaSelecionado, 'no Horario', this.horarioSelecionado)
-    this.modalOpened = false;
-    this.handleClearModalData();
+    this.appointmentService.marcarConsulta(this.agendaSelecionado, this.horarioSelecionado)
+      .pipe(take(1))
+      .subscribe({
+        next: () => {
+          this.modalOpened = false;
+          this.handleClearModalData();
+          this.loadConsultas();
+        },
+        error: (response) => {
+          this.toastrService.error('Erro ao agendar', response.error);
+        }
+      });
+  }
+
+  private loadConsultas() {
+    this.appointmentService.getConsultas()
+      .pipe(take(1))
+      .subscribe((response) => {
+        this.consultas = response;
+      });
   }
 
   constructor(
@@ -227,11 +244,7 @@ export class MainPageComponent implements OnInit {
   ngOnInit(): void {
     const user = this.authService.getUserInfo();
     this.userName = user.name;
-    this.appointmentService.getConsultas()
-      .pipe(take(1))
-      .subscribe((response) => {
-        this.consultas = response;
-      });
+    this.loadConsultas();
   }
 
   handleLogout() {
