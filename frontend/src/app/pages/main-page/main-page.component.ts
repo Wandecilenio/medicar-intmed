@@ -74,9 +74,11 @@ export class MainPageComponent implements OnInit {
       clearTimeout(this.comboEspecialidadesSearchDebounce);
     }
 
-    this.comboEspecialidadesSearchDebounce = setTimeout(() => {
-      this.loadMedicos();
-    }, 200);
+    if(this.comboEspecialidadesData.length > 0) {
+      this.comboEspecialidadesSearchDebounce = setTimeout(() => {
+        this.loadMedicos();
+      }, 200);
+    }
 
     return true;
   }
@@ -114,6 +116,78 @@ export class MainPageComponent implements OnInit {
     return true;
   }
 
+  comboAgendasLoading: Boolean = false;
+  comboAgendasData: Array<any> = [];
+  agendaSelecionado: any;
+
+  private loadAgendas(): void {
+    if(this.medicoSelecionado == null) return;
+    if(this.especialidadesSelecionadas.length == 0) return;
+
+    this.comboAgendasLoading = true;
+    this.comboService.getAgendas([this.medicoSelecionado], this.especialidadesSelecionadas)
+      .pipe(take(1))
+      .subscribe((response) => {
+        this.comboAgendasLoading = false;
+        this.comboAgendasData = response;
+      });
+  }
+
+  comboHorariosData: Array<any> = [];
+  horarioSelecionado: any;
+
+  public loadHorarios(): void {
+    if(this.agendaSelecionado == null) {
+      this.comboHorariosData = [];
+      return;
+    };
+
+    let horarios = [];
+    this.comboAgendasData.map((item) => {
+      if(item.id == this.agendaSelecionado) {
+        for (let i = 0; i < item.horarios.length; i++) {
+          horarios.push(item.horarios[i]);
+        }
+      }
+    });
+
+    this.comboHorariosData = horarios;
+  }
+
+  public handleEspecialidadesOnChange = () => {
+    if(this.especialidadesSelecionadas.length === 0) {
+      this.comboMedicosData = [];
+      this.medicoSelecionado = null;
+
+      this.comboAgendasData = [];
+      this.agendaSelecionado = null;
+
+      this.comboHorariosData = [];
+      this.horarioSelecionado = null;
+    }
+  }
+
+  public handleMedicoOnChange = () => {
+    if(this.medicoSelecionado == null) {
+      this.comboAgendasData = [];
+      this.agendaSelecionado = null;
+
+      this.comboHorariosData = [];
+      this.horarioSelecionado = null;
+    } else {
+      this.loadAgendas();
+    }
+  }
+
+  public handleAgendasOnChange = () => {
+    if(this.agendaSelecionado == null) {
+      this.comboHorariosData = [];
+      this.horarioSelecionado = null;
+    } else {
+      this.loadHorarios();
+    }
+  }
+
   handleOpenModal() {
     this.loadEspecialidades();
     this.modalOpened = true;
@@ -121,7 +195,16 @@ export class MainPageComponent implements OnInit {
 
   handleClearModalData() {
     this.comboEspecialidadesData = [];
+    this.especialidadesSelecionadas = [];
+
     this.comboMedicosData = [];
+    this.medicoSelecionado = null;
+
+    this.comboAgendasData = [];
+    this.agendaSelecionado = null;
+
+    this.comboHorariosData = [];
+    this.horarioSelecionado = null;
   }
 
   handleCancelModal() {
@@ -130,8 +213,9 @@ export class MainPageComponent implements OnInit {
   }
 
   handleSaveModal() {
+    console.log('Marque uma consulta na agenda do ID', this.agendaSelecionado, 'no Horario', this.horarioSelecionado)
     this.modalOpened = false;
-    alert('Saved');
+    this.handleClearModalData();
   }
 
   constructor(
@@ -143,7 +227,7 @@ export class MainPageComponent implements OnInit {
   ngOnInit(): void {
     const user = this.authService.getUserInfo();
     this.userName = user.name;
-    this.appointmentService.getAll()
+    this.appointmentService.getConsultas()
       .pipe(take(1))
       .subscribe((response) => {
         this.consultas = response;

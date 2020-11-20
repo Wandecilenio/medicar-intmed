@@ -35,4 +35,20 @@ export class ComboService {
       params,
     });
   }
+
+  getAgendas(medicos?: Array<any>, especialidades?: Array<any>): Observable<any> {
+    let params = {};
+
+    if(medicos !== null) {
+      params['medico'] = medicos;
+    }
+
+    if(especialidades !== null) {
+      params['especialidade'] = especialidades;
+    }
+
+    return this._http.get<any>(environment.baseUrl + '/agendas/', {
+      params,
+    });
+  }
 }

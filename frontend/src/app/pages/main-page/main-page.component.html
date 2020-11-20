@@ -57,6 +57,7 @@
       loadingText="Carregando..."
       typeToSearchText="Digite no minimo 3 caracteres para pesquisar"
       (search)="handleEspecialidadesSearch()"
+      (change)="handleEspecialidadesOnChange()"
       (add)="handleEspecialidadeOnAdd()"
       (remove)="handleEspecialidadeOnRemove()"
       [searchFn]="handleSetEspecialidadesSearch"
@@ -78,6 +79,7 @@
       loadingText="Carregando..."
       typeToSearchText="Digite no minimo 3 caracteres para pesquisar"
       (search)="handleMedicosSearch()"
+      (change)="handleMedicoOnChange()"
       [searchFn]="handleSetMedicosSearch"
       [minTermLength]="3"
       [markFirst]="true"
@@ -89,15 +91,18 @@
     </ng-select>
   </div>
 
-<!--
   <div class="form-item">
     <ng-select
       class="custom"
       placeholder="Data"
-      [items]="options"
-      bindLabel="nome"
+      loadingText="Carregando..."
+      [items]="comboAgendasData"
+      [loading]="comboAgendasLoading"
+      (change)="handleAgendasOnChange()"
+      bindLabel="dia"
       bindValue="id"
-      [(ngModel)]="selectedOption">
+      [(ngModel)]="agendaSelecionado"
+      [disabled]="medicoSelecionado == null">
     </ng-select>
   </div>
 
@@ -105,12 +110,11 @@
     <ng-select
       class="custom"
       placeholder="Hora"
-      [items]="options"
-      bindLabel="nome"
-      bindValue="id"
-      [(ngModel)]="selectedOption">
+      [items]="comboHorariosData"
+      [(ngModel)]="horarioSelecionado"
+      [disabled]="agendaSelecionado == null">
     </ng-select>
-  </div> -->
+  </div>
 
   <div class="buttons">
     <medicar-button
@@ -124,7 +128,7 @@
       class="button"
       text="Confirmar"
       primary="true"
-      [disabled]="modalSaveDisabled"
+      [disabled]="especialidadesSelecionadas.length === 0 || medicoSelecionado == null || agendaSelecionado == null || horarioSelecionado == null"
       (onClick)="handleSaveModal()">
     </medicar-button>
   </div>
