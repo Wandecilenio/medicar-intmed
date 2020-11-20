@@ -15,7 +15,7 @@ class MedicoAdmin(admin.ModelAdmin):
 
 @admin.register(Agenda)
 class AgendaAdmin(admin.ModelAdmin):
-    list_display = ('medico', 'dia', 'total_horarios')
+    list_display = ('id', 'medico', 'dia', 'total_horarios')
     list_filter = ['medico']
     fields = ('medico', 'dia', 'horarios')
 
