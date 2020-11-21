@@ -88,8 +88,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'medicar',
         'USER': 'postgres',
-        'PASSWORD': 'medicar-dev123',
-        'HOST': 'ec2-3-20-235-25.us-east-2.compute.amazonaws.com',
+        'PASSWORD': 'medicar-intmed',
+        'HOST': 'db',
         'PORT': '5432',
     }
 }
@@ -131,7 +131,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/admin/static/'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [

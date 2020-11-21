@@ -13,7 +13,7 @@ export class AuthService {
 
   public doLogin(email: string, password: string): Observable<{ success: Boolean, message: string }> {
     return new Observable((obs) => {
-      this._http.post<any>(environment.baseUrl + '/api/auth/login/', { username: email, password }, {
+      this._http.post<any>(environment.baseUrl + '/auth/login/', { username: email, password }, {
         headers: new HttpHeaders({ 'Content-Type': 'application/json' })
       })
         .pipe(take(1))
@@ -34,7 +34,7 @@ export class AuthService {
 
   public doRegister(name: string, email: string, password: string, password2: string): Observable<{ success: Boolean, message: string }> {
     return new Observable((obs) => {
-      this._http.post<any>(environment.baseUrl + '/api/auth/register/', { name, email, password, password2 }, {
+      this._http.post<any>(environment.baseUrl + '/auth/register/', { name, email, password, password2 }, {
         headers: new HttpHeaders({ 'Content-Type': 'application/json' })
       })
         .pipe(take(1))
