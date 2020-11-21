@@ -21,9 +21,15 @@ COPY .  /app
 RUN cd /app && npm run build:$env
 
 # Build a small nginx image with static website
-FROM nginx:alpine
+FROM nginx:1.18-alpine-perl
 RUN rm -rf /usr/share/nginx/html/*
-COPY nginx.conf /etc/nginx/nginx.conf
+
+ADD nginx/general.conf /etc/nginx/nginxconfig.io/general.conf
+ADD nginx/nginx.conf /etc/nginx/nginx.conf
+ADD nginx/proxy.conf /etc/nginx/nginxconfig.io/proxy.conf
+ADD nginx/security.conf /etc/nginx/nginxconfig.io/security.conf
+ADD nginx/default.conf /etc/nginx/conf.d/default.conf
+
 COPY --from=builder /app/dist/Medicar /usr/share/nginx/html
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

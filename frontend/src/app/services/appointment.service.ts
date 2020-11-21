@@ -22,6 +22,6 @@ export class AppointmentService {
   }
 
   desmarcarConsulta(consulta_id: Number): Observable<any>{
-    return this._http.delete<any>(environment.baseUrl + '/consultas/' + consulta_id);
+    return this._http.delete<any>(environment.baseUrl + '/consultas/' + consulta_id + '/');
   }
 }
