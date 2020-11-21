@@ -73,22 +73,25 @@ class ConsultaViewSet(viewsets.ModelViewSet):
         nova_consulta = Consulta.objects.create(
             medico = agenda.medico,
             user = request.user,
-            agenda=agenda,
-            horario=horario,
-            data_agendamento=datetime.datetime.now()
+            agenda = agenda,
+            horario = horario,
+            data_agendamento = datetime.datetime.now()
         )
 
         serializer = ConsultaSerializer(nova_consulta)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    # def destroy(self, request, *args, **kwargs):
-    #     agora = datetime.now().strftime('%Y-%m-%d %H:%M')
-    #     consulta = Consulta.objects.filter(pk=self.kwargs.get('pk'), usuario=self.request.user, dia__gte=agora).first()
-    #     if consulta is None:
-    #         return Response(status=status.HTTP_404_NOT_FOUND)
-    #     consulta.usuario = None
-    #     consulta.save()
-    #     return Response(status=status.HTTP_204_NO_CONTENT)
+    def destroy(self, request, *args, **kwargs):
+        consulta = Consulta.objects.filter(pk=kwargs.get('pk'), user=request.user).first()
+        if consulta is None:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        # Nao pode marcar consulta num horario que ja passou
+        if datetime.datetime.strptime(f'{consulta.agenda.dia} {consulta.horario}', f'%Y-%m-%d %H:%M:%S') < datetime.datetime.now():
+            raise ValidationError("Não é possível desmarcar uma consulta de um horário que já passou")
+
+        consulta.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 class AgendaViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = AgendaSerializer
