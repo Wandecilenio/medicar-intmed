@@ -217,12 +217,27 @@ export class MainPageComponent implements OnInit {
       .pipe(take(1))
       .subscribe({
         next: () => {
+          this.toastrService.success('Marcar consulta', 'Consulta marcada com sucesso!');
           this.modalOpened = false;
           this.handleClearModalData();
           this.loadConsultas();
         },
         error: (response) => {
-          this.toastrService.error('Erro ao agendar', response.error);
+          this.toastrService.error('Erro ao marcar consulta', response.error);
+        }
+      });
+  }
+
+  handleDesmarcar(consulta_id: Number) {
+    this.appointmentService.desmarcarConsulta(consulta_id)
+      .pipe(take(1))
+      .subscribe({
+        next: () => {
+          this.toastrService.success('Desmarcar consulta', 'Consulta desmarcada com sucesso!');
+          this.loadConsultas();
+        },
+        error: (response) => {
+          this.toastrService.error('Erro ao desmarcar consulta', response.error);
         }
       });
   }

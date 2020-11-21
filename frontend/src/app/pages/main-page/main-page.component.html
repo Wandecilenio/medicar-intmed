@@ -39,7 +39,7 @@
           <td>{{consulta.medico.nome}}</td>
           <td>{{consulta.dia | date: 'dd/MM/yyyy'}}</td>
           <td>{{consulta.horario}}</td>
-          <td class="actions"><medicar-button [icon]="iconCross" small="true" text="Desmarcar" type="button"></medicar-button></td>
+          <td class="actions"><medicar-button (onClick)="handleDesmarcar(consulta.id)" [icon]="iconCross" small="true" text="Desmarcar" type="button"></medicar-button></td>
         </tr>
       </tbody>
     </table>
