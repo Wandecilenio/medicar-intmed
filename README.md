@@ -14,12 +14,12 @@ docker-compose up -d
 ### Migração
 
 ```shell
-docker exec medicar_back_1 python manage.py migrate --noinput
+docker exec medicar-intmed_back_1 python manage.py migrate --noinput
 ```
 
 ### Criando um super usuário de administração do django-admin
 
 ```shell
-docker exec -it medicar_back_1 /bin/bash
+docker exec -it medicar-intmed_back_1 /bin/bash
 python manage.py createsuperuser
 ```
