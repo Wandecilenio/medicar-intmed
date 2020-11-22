@@ -23,3 +23,8 @@ docker exec medicar-intmed_back_1 python manage.py migrate --noinput
 docker exec -it medicar-intmed_back_1 /bin/bash
 python manage.py createsuperuser
 ```
+
+*Obs: Espere todos os serviços subirem.*
+
+Depois é só acessar no link: [localhost:8080](http://localhost:8080) para a aplicação do medicar
+e [localhost:8080/admin](http://localhost:8080/admin) para acessar a área administrativa.
