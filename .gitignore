@@ -49,3 +49,5 @@ Thumbs.db
 database/pgdata/
 
 .env
+
+!**/__pycache__/
