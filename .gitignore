@@ -47,3 +47,5 @@ Thumbs.db
 
 # Database pgdata
 database/pgdata/
+
+.env
